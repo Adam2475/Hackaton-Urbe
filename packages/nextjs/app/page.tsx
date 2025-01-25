@@ -10,8 +10,6 @@ import { useTransaction } from 'wagmi'
 import { useSendTransaction } from 'wagmi'
 import { parseEther } from 'viem'
 
-const { data: hash, sendTransaction } = useSendTransaction()
-
 export default function Login() {
   const { address, isConnected } = useAccount();
   const { connect } = useConnect();
@@ -22,11 +20,12 @@ export default function Login() {
 
   //////////////////////////////
 
+  const { data: hash, sendTransaction } = useSendTransaction()
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
     const to = formData.get('address') as `0x${string}`
-    const value = formData.get('value') as string
+    const value = formData.get('value') as string 
     sendTransaction({ to, value: parseEther(value) })
   }
   return (

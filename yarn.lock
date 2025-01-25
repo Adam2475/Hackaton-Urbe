@@ -1376,6 +1376,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mjackson/node-fetch-server@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@mjackson/node-fetch-server@npm:0.2.0"
+  checksum: b082b7b763883cd7caee70151c9ef7ff0e1b2cec378c21a2f308c374dec792235543145e7f31c5a1b37b450802123ce02e5d1161f6d086e37f6baef1a62a65a3
+  languageName: node
+  linkType: hard
+
 "@motionone/animation@npm:^10.15.1, @motionone/animation@npm:^10.18.0":
   version: 10.18.0
   resolution: "@motionone/animation@npm:10.18.0"
@@ -2174,6 +2181,24 @@ __metadata:
     viem: 2.x
     wagmi: ^2.9.0
   checksum: d13af4b9ffa25271282dadfb438b025a3c630bc8e4b9893450a4ac900a8f7f151c02e6c597d52f5fdceff7c0446e4f4c8ebd68ff0773971ec6f6a76c34be0548
+  languageName: node
+  linkType: hard
+
+"@react-router/node@npm:^7.1.3":
+  version: 7.1.3
+  resolution: "@react-router/node@npm:7.1.3"
+  dependencies:
+    "@mjackson/node-fetch-server": ^0.2.0
+    source-map-support: ^0.5.21
+    stream-slice: ^0.1.2
+    undici: ^6.19.2
+  peerDependencies:
+    react-router: 7.1.3
+    typescript: ^5.1.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 7a2c83145dfb38a37242c68712a828c547e8b20331410cd108143a4241d7f3d230e2feae3c183ec0cbd31693923e848ed3d8d0d38f9ac08a2872796fcfc2f3d6
   languageName: node
   linkType: hard
 
@@ -11583,6 +11608,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:^19.0.0":
+  version: 19.0.0
+  resolution: "react-dom@npm:19.0.0"
+  dependencies:
+    scheduler: ^0.25.0
+  peerDependencies:
+    react: ^19.0.0
+  checksum: 009cc6e575263a0d1906f9dd4aa6532d2d3d0d71e4c2b7777c8fe4de585fa06b5b77cdc2e0fbaa2f3a4a5e5d3305c189ba152153f358ee7da4d9d9ba5d3a8975
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:~18.3.1":
   version: 18.3.1
   resolution: "react-dom@npm:18.3.1"
@@ -11755,6 +11791,13 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: 75602840106aa9c6545149d6d7ae1502fb7b7abadcce70a6954c4b64a438ff1cd16fc77a0a1e5197cdd72da398f39eb929ea06f9005c45b132ed34e056ebdeb1
+  languageName: node
+  linkType: hard
+
+"react@npm:^19.0.0":
+  version: 19.0.0
+  resolution: "react@npm:19.0.0"
+  checksum: 86de15d85b2465feb40297a90319c325cb07cf27191a361d47bcfe8c6126c973d660125aa67b8f4cbbe39f15a2f32efd0c814e98196d8e5b68c567ba40a399c6
   languageName: node
   linkType: hard
 
@@ -12227,6 +12270,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"scheduler@npm:^0.25.0":
+  version: 0.25.0
+  resolution: "scheduler@npm:0.25.0"
+  checksum: b7bb9fddbf743e521e9aaa5198a03ae823f5e104ebee0cb9ec625392bb7da0baa1c28ab29cee4b1e407a94e76acc6eee91eeb749614f91f853efda2613531566
+  languageName: node
+  linkType: hard
+
 "scrypt-js@npm:3.0.1, scrypt-js@npm:^3.0.0":
   version: 3.0.1
   resolution: "scrypt-js@npm:3.0.1"
@@ -12244,10 +12294,13 @@ __metadata:
     "@mui/icons-material": ^6.4.1
     "@mui/material": ^6.4.1
     "@openzeppelin/contracts": ^5.2.0
+    "@react-router/node": ^7.1.3
     axios: ^1.7.9
     hardhat: ^2.22.18
     husky: ~8.0.3
     lint-staged: ~13.2.2
+    react: ^19.0.0
+    react-dom: ^19.0.0
     react-hook-form: ^7.54.2
     react-router-dom: ^7.1.3
     yup: ^1.6.1
@@ -12658,7 +12711,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-support@npm:^0.5.13":
+"source-map-support@npm:^0.5.13, source-map-support@npm:^0.5.21":
   version: 0.5.21
   resolution: "source-map-support@npm:0.5.21"
   dependencies:
@@ -12769,6 +12822,13 @@ __metadata:
   version: 1.0.3
   resolution: "stream-shift@npm:1.0.3"
   checksum: a24c0a3f66a8f9024bd1d579a533a53be283b4475d4e6b4b3211b964031447bdf6532dd1f3c2b0ad66752554391b7c62bd7ca4559193381f766534e723d50242
+  languageName: node
+  linkType: hard
+
+"stream-slice@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "stream-slice@npm:0.1.2"
+  checksum: 027111397bd709f299fb1bb34902baf4707bba8851219c9115df673be1075a2cecf54d8671e6258c94483d1fa4e931c6784e49f2e005b1b6d5e3b8b61028fbe1
   languageName: node
   linkType: hard
 
@@ -13868,6 +13928,13 @@ __metadata:
   dependencies:
     "@fastify/busboy": ^2.0.0
   checksum: a402d699a602a8feee1c0f78267467c8ffcbd7682267fec7a1307fd11554a32976a2307bf1cc8bf6ef7a667654336592fbd66d675df20ce28357536fb55a3a7d
+  languageName: node
+  linkType: hard
+
+"undici@npm:^6.19.2":
+  version: 6.21.1
+  resolution: "undici@npm:6.21.1"
+  checksum: 2efc52f77224754a2efa7cb6459829f3c93c8321d17e76f574a904b353783d95073b6116f5b15637c4845d98c9dc5a019b809cb9d63b3529267e7727c49f6996
   languageName: node
   linkType: hard
 

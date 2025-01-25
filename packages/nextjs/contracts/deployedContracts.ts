@@ -417,12 +417,41 @@ const deployedContracts = {
             },
             {
               internalType: "address",
-              name: "vendor",
+              name: "seller",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "arbiter",
               type: "address",
             },
           ],
-          name: "payment",
+          name: "pre_payment",
           outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "buyer",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "arbiter",
+              type: "address",
+            },
+          ],
+          name: "releaseAmount",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
           stateMutability: "nonpayable",
           type: "function",
         },

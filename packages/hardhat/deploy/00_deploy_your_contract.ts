@@ -20,6 +20,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     You can run the `yarn account` command to check your balance in every network.
   */
   const { deployer } = await hre.getNamedAccounts();
+  console.log("deployer", deployer)
   const { deploy } = hre.deployments;
   const myERC20Deployment = await deploy("customToken", {
     from: deployer,
@@ -27,7 +28,6 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     log: true,
     autoMine: true,
   });
-
   // Deploy the project contract with the address of the customToken
   await deploy("project", {
     from: deployer,

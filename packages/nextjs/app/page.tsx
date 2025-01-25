@@ -4,11 +4,15 @@ import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { injected } from "wagmi/connectors";
 import AuthForm from "../components/AuthForm";
 import { Container, Typography, Button, Box } from "@mui/material";
+import { useBalance } from 'wagmi'
 
 export default function Login() {
   const { address, isConnected } = useAccount();
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
+  const result = useBalance({
+    address: '0xf4A4EeD4A13eE7ED44d01ef3896Ae79677d060f6',
+  })
 
   return (
     <Container maxWidth="sm" style={{ textAlign: "center", paddingTop: "50px" }}>

@@ -39,10 +39,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
             }}
         >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                {/* Menu Icon */}
-                <IconButton edge="start" color="inherit" onClick={onMenuClick}>
-                    <MenuIcon />
-                </IconButton>
+               
 
                 {/* Logo */}
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>

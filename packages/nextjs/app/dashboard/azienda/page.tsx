@@ -17,6 +17,9 @@ const prodotti = [
     { nome: "Coca Cola", quantita: 80, ultimoOrdine: "2024-01-12", prezzo: 2.0 },
     { nome: "Fanta", quantita: 60, ultimoOrdine: "2024-01-14", prezzo: 1.8 },
     { nome: "Birra", quantita: 90, ultimoOrdine: "2024-01-16", prezzo: 3.0 },
+    { nome: "Sprite", quantita: 90, ultimoOrdine: "2024-01-16", prezzo: 3.0 },
+    { nome: "RedBull", quantita: 90, ultimoOrdine: "2024-01-16", prezzo: 3.0 },
+
 ];
 
 // Calcolo bilancio

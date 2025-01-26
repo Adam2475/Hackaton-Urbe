@@ -11,7 +11,7 @@ export default function Login() {
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { data, isError, isLoading } = useBalance({
-    address: '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e',
+    address: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
   });
 
   return (

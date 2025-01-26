@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import contractABI from "/Users/giulio/Desktop/Hackaton-Urbe/packages/hardhat/artifacts/contracts/YourContract.sol/project.json";
 import { useRouter } from "next/navigation";
+import { useSendTransaction } from 'wagmi'
+import { parseEther } from 'viem'
 import {
   Container,
   Typography,
@@ -51,6 +52,15 @@ export default function ClienteDashboard() {
   const [cartOpen, setCartOpen] = useState(false);
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [transactionResult, setTransactionResult] = useState<string | null>(null);
+  const { data: hash, sendTransaction } = useSendTransaction();
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) { 
+    e.preventDefault() 
+    const formData = new FormData(e.target as HTMLFormElement) 
+    const to = formData.get('address') as `0x${string}` 
+    const value = formData.get('value') as string 
+    sendTransaction({ to, value: parseEther(value) })
+  } 
 
   useEffect(() => {
     const userType = localStorage.getItem("userType");
@@ -230,12 +240,13 @@ export default function ClienteDashboard() {
       <Dialog open={paymentOpen} onClose={() => setPaymentOpen(false)} fullWidth maxWidth="sm">
         <DialogTitle>Pagamento</DialogTitle>
         <DialogContent>
-          <form onSubmit={handlePaymentSubmit}>
-            <TextField name="address" label="Indirizzo destinatario" fullWidth required sx={{ mt: 2 }} />
-            <TextField name="value" label="Importo (€)" fullWidth required value={totalAmount} disabled sx={{ mt: 2 }} />
+          <form onSubmit={submit}>
+            <input name="address" placeholder="Indirizzo destinatario" required />
+            <input name="value" placeholder="Importo (€)" required />
             <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }}>
               Invia Pagamento
             </Button>
+            {hash && <div>Transaction Hash: {hash}</div>}
           </form>
           {loading && <LinearProgress sx={{ mt: 2 }} />}
           {transactionResult && (

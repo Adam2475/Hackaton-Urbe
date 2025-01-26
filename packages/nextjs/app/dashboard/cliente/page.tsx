@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import contractABI from "/Users/giulio/Desktop/Hackaton-Urbe/packages/hardhat/artifacts/contracts/YourContract.sol/project.json";
 import { useRouter } from "next/navigation";
 import {
   Container,

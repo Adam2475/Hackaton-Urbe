@@ -2184,6 +2184,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-router/node@npm:^7.1.3":
+  version: 7.1.3
+  resolution: "@react-router/node@npm:7.1.3"
+  dependencies:
+    "@mjackson/node-fetch-server": ^0.2.0
+    source-map-support: ^0.5.21
+    stream-slice: ^0.1.2
+    undici: ^6.19.2
+  peerDependencies:
+    react-router: 7.1.3
+    typescript: ^5.1.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 7a2c83145dfb38a37242c68712a828c547e8b20331410cd108143a4241d7f3d230e2feae3c183ec0cbd31693923e848ed3d8d0d38f9ac08a2872796fcfc2f3d6
+  languageName: node
+  linkType: hard
+
 "@react-spring/animated@npm:~9.7.5":
   version: 9.7.5
   resolution: "@react-spring/animated@npm:9.7.5"
@@ -2247,24 +2265,6 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 4da57c7d2bf4cf76cedd1c57986ba85e839aaec45e247f75b7d12d777f6054fe77446e95a18080db5e714b0a5386a07e617c36592506554abfd2c301c50e66cc
-  languageName: node
-  linkType: hard
-
-"@react-router/node@npm:^7.1.3":
-  version: 7.1.3
-  resolution: "@react-router/node@npm:7.1.3"
-  dependencies:
-    "@mjackson/node-fetch-server": ^0.2.0
-    source-map-support: ^0.5.21
-    stream-slice: ^0.1.2
-    undici: ^6.19.2
-  peerDependencies:
-    react-router: 7.1.3
-    typescript: ^5.1.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 7a2c83145dfb38a37242c68712a828c547e8b20331410cd108143a4241d7f3d230e2feae3c183ec0cbd31693923e848ed3d8d0d38f9ac08a2872796fcfc2f3d6
   languageName: node
   linkType: hard
 
@@ -12478,13 +12478,16 @@ __metadata:
     "@mui/icons-material": ^6.4.1
     "@mui/material": ^6.4.1
     "@openzeppelin/contracts": ^5.2.0
+    "@react-router/node": ^7.1.3
     "@react-spring/web": ^9.7.5
     "@types/react-beautiful-dnd": ^13
     axios: ^1.7.9
     hardhat: ^2.22.18
     husky: ~8.0.3
     lint-staged: ~13.2.2
+    react: ^19.0.0
     react-beautiful-dnd: ^13.1.1
+    react-dom: ^19.0.0
     react-hook-form: ^7.54.2
     react-router-dom: ^7.1.3
     yup: ^1.6.1

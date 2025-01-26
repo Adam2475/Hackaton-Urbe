@@ -59,12 +59,6 @@ export default function Login() {
       )}
 
       <AuthForm />
-    <form onSubmit={submit}>
-      <input name="address" placeholder="0xA0Cf…251e" required />
-      <input name="value" placeholder="0.05" required />
-      <button type="submit">Send</button>
-      {hash && <div>Transaction Hash: {hash}</div>}
-    </form>
     </Container>
   );
 }

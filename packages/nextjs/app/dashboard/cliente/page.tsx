@@ -12,18 +12,21 @@ import {
   Grid,
   TextField,
   Box,
-  CircularProgress,
   List,
   ListItem,
   ListItemText,
-  Divider,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  IconButton,
+  Badge,
+  LinearProgress,
+  AppBar,
+  Toolbar,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 // Prodotti disponibili
 const initialProducts = [
@@ -44,8 +47,9 @@ export default function ClienteDashboard() {
   const [cart, setCart] = useState<{ id: number; nome: string; quantita: number; prezzo: number }[]>([]);
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
   const [loading, setLoading] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  const [transactionResult, setTransactionResult] = useState<string | null>(null);
 
   useEffect(() => {
     const userType = localStorage.getItem("userType");
@@ -67,12 +71,7 @@ export default function ClienteDashboard() {
     if (quantity > 0 && quantity <= prodotto.disponibilita) {
       setCart((prevCart) => [
         ...prevCart,
-        {
-          id: prodotto.id,
-          nome: prodotto.nome,
-          quantita: quantity,
-          prezzo: prodotto.prezzo,
-        },
+        { id: prodotto.id, nome: prodotto.nome, quantita: quantity, prezzo: prodotto.prezzo },
       ]);
 
       setProdotti((prevProdotti) =>
@@ -96,19 +95,23 @@ export default function ClienteDashboard() {
     );
   };
 
-  // Funzione per completare l'ordine e svuotare il carrello
-  const handleOrderSubmit = () => {
+  // Funzione per completare il pagamento
+  const handlePaymentSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setLoading(true);
+    setTransactionResult(null);
+
     setTimeout(() => {
-      console.log("Ordine confermato:", cart);
-      setCart([]);
+      const success = Math.random() > 0.2; // Simula il successo con 80% di probabilità
       setLoading(false);
-      setOrderSuccess(true);
+      setTransactionResult(success ? "success" : "error");
+
       setTimeout(() => {
-        setOrderSuccess(false);
-        setCartOpen(false);
-      }, 3000);
-    }, 2000);
+        setPaymentOpen(false);
+        setTransactionResult(null);
+        setCart([]); // Svuota il carrello dopo il pagamento
+      }, 4000);
+    }, 4000);
   };
 
   // Calcola il totale del carrello
@@ -116,6 +119,28 @@ export default function ClienteDashboard() {
 
   return (
     <Container maxWidth="md" sx={{ textAlign: "center", mt: 5 }}>
+      <AppBar
+        position="static"
+        sx={{
+        background: "linear-gradient(135deg, #1e3c72 30%, #2a5298 90%)",
+        width: "fit-content",
+        borderRadius: 1,
+        mt: 2,
+        ml: "auto",
+        mr: 2,
+        boxShadow: "none",
+      }}
+    >
+  <Toolbar sx={{ minHeight: "48px", padding: "0 8px" }}>
+    <IconButton color="inherit" onClick={() => setCartOpen(true)}>
+      <Badge badgeContent={cart.length} color="error">
+        <ShoppingCartIcon />
+      </Badge>
+    </IconButton>
+  </Toolbar>
+</AppBar>
+
+
       <Typography variant="h4" gutterBottom>
         Dashboard Cliente
       </Typography>
@@ -143,21 +168,18 @@ export default function ClienteDashboard() {
                   inputProps={{ min: 0, max: prodotto.disponibilita }}
                   value={quantities[prodotto.id] || ""}
                   onChange={(e) => handleQuantityChange(prodotto.id, e.target.value, prodotto.disponibilita)}
-                  sx={{
-                    mt: 2,
-                    "& .MuiOutlinedInput-root": prodotto.disponibilita === 0 ? { borderColor: "red" } : {},
-                  }}
+                  sx={{ mt: 2 }}
                   disabled={prodotto.disponibilita === 0}
                 />
               </CardContent>
               <CardActions>
                 <Button
                   variant="contained"
-                  color={prodotto.disponibilita > 0 ? "primary" : "error"}
+                  color="primary"
                   onClick={() => handleAddToCart(prodotto)}
                   disabled={prodotto.disponibilita === 0}
                 >
-                  {prodotto.disponibilita > 0 ? "Aggiungi al Carrello" : "Esaurito"}
+                  Aggiungi al Carrello
                 </Button>
               </CardActions>
             </Card>
@@ -165,47 +187,62 @@ export default function ClienteDashboard() {
         ))}
       </Grid>
 
-      {/* Bottone per aprire il carrello */}
-      <Box sx={{ mt: 5 }}>
-        <Button variant="contained" color="primary" onClick={() => setCartOpen(true)}>
+      <Box sx={{ mt: 5, width: "100%" }}>
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: "#ff5722",  // Colore arancione distintivo
+            "&:hover": { bgcolor: "#e64a19" },  // Colore più scuro quando ci passi sopra
+            width: "100%",  // Rendi il pulsante largo quanto il contenitore
+            py: 2,  // Aggiungi padding verticale per renderlo più alto
+            fontSize: "1.2rem",  // Ingrandisci il testo
+            fontWeight: "bold",
+          }}
+          onClick={() => setCartOpen(true)}
+        >
           Vai al Carrello
         </Button>
       </Box>
 
-      {/* Dialog del carrello */}
       <Dialog open={cartOpen} onClose={() => setCartOpen(false)} fullWidth maxWidth="sm">
         <DialogTitle>Carrello</DialogTitle>
         <DialogContent>
-          {orderSuccess ? (
-            <Typography variant="h6" color="success.main" sx={{ mt: 4, textAlign: "center" }}>
-              ✅ Ordine effettuato con successo!
+          <List>
+            {cart.map((item) => (
+              <ListItem key={item.id}>
+                <ListItemText primary={`${item.nome} - Quantità: ${item.quantita}`} />
+                <IconButton onClick={() => handleRemoveFromCart(item.id, item.quantita)}>
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </ListItem>
+            ))}
+          </List>
+        </DialogContent>
+        <DialogActions>
+          <Typography>Totale: €{totalAmount.toFixed(2)}</Typography>
+          <Button onClick={() => setPaymentOpen(true)} variant="contained" color="secondary">
+            Ordina e Paga
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={paymentOpen} onClose={() => setPaymentOpen(false)} fullWidth maxWidth="sm">
+        <DialogTitle>Pagamento</DialogTitle>
+        <DialogContent>
+          <form onSubmit={handlePaymentSubmit}>
+            <TextField name="address" label="Indirizzo destinatario" fullWidth required sx={{ mt: 2 }} />
+            <TextField name="value" label="Importo (€)" fullWidth required value={totalAmount} disabled sx={{ mt: 2 }} />
+            <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }}>
+              Invia Pagamento
+            </Button>
+          </form>
+          {loading && <LinearProgress sx={{ mt: 2 }} />}
+          {transactionResult && (
+            <Typography sx={{ textAlign: "center", mt: 3, fontSize: "1.5rem", fontWeight: "bold" }}>
+              {transactionResult === "success" ? "✅ Transazione completata!" : "❌ Transazione fallita!"}
             </Typography>
-          ) : cart.length === 0 ? (
-            <Typography>Nessun prodotto nel carrello.</Typography>
-          ) : (
-            <List>
-              {cart.map((item) => (
-                <ListItem key={item.id}>
-                  <ListItemText
-                    primary={`${item.nome} - Quantità: ${item.quantita}`}
-                    secondary={`Totale: €${(item.quantita * item.prezzo).toFixed(2)}`}
-                  />
-                  <IconButton edge="end" onClick={() => handleRemoveFromCart(item.id, item.quantita)}>
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                </ListItem>
-              ))}
-            </List>
           )}
         </DialogContent>
-        {!orderSuccess && (
-          <DialogActions>
-            <Typography sx={{ ml: 2 }}>Totale: €{totalAmount.toFixed(2)}</Typography>
-            <Button onClick={handleOrderSubmit} variant="contained" color="secondary">
-              {loading ? <CircularProgress size={24} /> : "Ordina e Paga"}
-            </Button>
-          </DialogActions>
-        )}
       </Dialog>
     </Container>
   );

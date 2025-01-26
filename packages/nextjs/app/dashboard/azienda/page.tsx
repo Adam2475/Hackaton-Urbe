@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useReadContract } from 'wagmi'
 import { useRouter } from "next/navigation";
 import {
     Container, Typography, Card, CardContent, Table,
@@ -8,6 +9,261 @@ import {
     TableRow, Paper, Box, useMediaQuery
 } from "@mui/material";
 
+const contractABI = [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_usdcTokenAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "AlreadyPayed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAmount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidPayer",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotEnoughMoney",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotPayed",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "contributor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        }
+      ],
+      "name": "PaymentMade",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "totalTransaction",
+          "type": "uint256"
+        }
+      ],
+      "name": "totalTransaction",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "WeiAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "transactionLog",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "wallet",
+          "type": "address"
+        }
+      ],
+      "name": "getTransactionsReceivedByAddress",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountWei",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct project.Transaction[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "payer",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "arbiter",
+          "type": "address"
+        }
+      ],
+      "name": "pre_payment",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalFunds",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "transactions",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amountWei",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "usdcTokenAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+const contractAddress = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC";
+export const wagmiContractConfig = {
+  addressOrName: contractAddress,
+  contractInterface: contractABI,
+};
 // Definizione dati fittizi dei prodotti
 const prodotti = [
     { nome: "Acqua Naturale", quantita: 100, ultimoOrdine: "2024-01-15", prezzo: 1.0 },
@@ -25,7 +281,6 @@ const prodotti = [
 // Calcolo bilancio
 const totaleIncassato = prodotti.reduce((acc, item) => acc + item.quantita * item.prezzo, 0);
 const totaleSpeso = 1500; // Esempio di spese
-
 export default function AziendaDashboard() {
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -38,9 +293,40 @@ export default function AziendaDashboard() {
         }
     }, []);
 
+    // const { data: transactions, isLoading, isError } = useReadContract({
+    //     ...wagmiContractConfig,
+    //     functionName: 'getTransactionsReceivedByAddress',
+    //     args: [contractAddress],
+    // });
+    // const { data, isLoading, isError } = useReadContract({
+    //     ...wagmiContractConfig,
+    //     functionName: 'getTransactionsReceivedByAddress',
+    //     args: [contractAddress],
+    //     query: {
+    //         enabled: !!contractAddress,
+    //       },
+    // })
+    // console.log()
+    // Verifica che 'data' non sia undefined e poi usa i dati.
+    // let transactions = [];
+    // if (data) {
+    //     const [senderr, amounts, timestamps] = data; // Se 'data' è un array, estrai i valori
+    //     transactions = senders.map((sender, index) => ({
+    //         sender,
+    //         amountWei: amounts[index],
+    //         timestamp: timestamps[index],
+    //     }));
+    // }
+    const transactions = [
+        { sender: '0xAddress1', amountWei: 1000, timestamp: 1617894000 },
+        { sender: '0xAddress2', amountWei: 2000, timestamp: 1617894600 },
+    ];
+    
+    console.log('Transactions:', transactions);
+    
+    console.log('Transactions:', transactions);
     return (
         <div>
-            
             <Container sx={{ mt: 4 }}>
                 <Typography variant="h4" align="center" gutterBottom>
                     Dashboard Gestionale
@@ -114,6 +400,37 @@ export default function AziendaDashboard() {
                                 </Typography>
                             </Card>
                         </Box>
+
+                        {/* Se ci sono transazioni ricevute, mostralo */}
+                        {Array.isArray(transactions) ? (
+                            <Box sx={{ mt: 4 }}>
+                                <Typography variant="h5" gutterBottom>
+                                    Transazioni Ricevute
+                                </Typography>
+                                <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
+                                    <Table>
+                                        <TableHead sx={{ backgroundColor: "#2a5298" }}>
+                                            <TableRow>
+                                                <TableCell sx={{ color: "white", fontWeight: "bold" }}>Mittente</TableCell>
+                                                <TableCell sx={{ color: "white", fontWeight: "bold" }} align="right">Importo</TableCell>
+                                                <TableCell sx={{ color: "white", fontWeight: "bold" }} align="right">Data</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {transactions.map((transaction, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell>{transaction.sender}</TableCell>
+                                                    <TableCell align="right">{transaction.amountWei}</TableCell> {/* Correzione nel nome della proprietà */}
+                                                    <TableCell align="right">{new Date(transaction.timestamp * 1000).toLocaleString()}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Box>
+                        ) : (
+                            <Typography>No transactions found</Typography>
+                        )}
                     </CardContent>
                 </Card>
             </Container>

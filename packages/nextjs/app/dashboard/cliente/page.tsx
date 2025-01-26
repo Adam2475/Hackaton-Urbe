@@ -1,6 +1,6 @@
 "use client";
-
 import { useEffect, useState } from "react";
+import contractABI from "/Users/giulio/Desktop/Hackaton-Urbe/packages/hardhat/artifacts/contracts/YourContract.sol/project.json";
 import { useRouter } from "next/navigation";
 import {
   Container,
@@ -28,6 +28,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
+const CONTRACT_ADDRESS = "0xYourContractAddress"; // Sostituisci con l'indirizzo del tuo contratto
 // Prodotti disponibili
 const initialProducts = [
   { id: 1, nome: "Acqua Naturale", prezzo: 1.0, disponibilita: 100 },

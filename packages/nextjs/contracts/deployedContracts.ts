@@ -5,9 +5,9 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  31337: {
+  421614: {
     customToken: {
-      address: "0x663F3ad617193148711d28f5334eE4Ed07016602",
+      address: "0xC443a9e208f26426aecC4C48B43b032F1D8eDf2E",
       abi: [
         {
           inputs: [],
@@ -326,7 +326,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     project: {
-      address: "0x2E983A1Ba5e8b38AAAeC4B440B9dDcFBf72E15d1",
+      address: "0x6fd62436c0ef51508D15198034353E22DC2778dE",
       abi: [
         {
           inputs: [

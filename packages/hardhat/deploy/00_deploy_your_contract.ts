@@ -19,7 +19,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     existing PK which will fill DEPLOYER_PRIVATE_KEY_ENCRYPTED in the .env file (then used on hardhat.config.ts)
     You can run the `yarn account` command to check your balance in every network.
   */
-  const  deployer  = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC";
+  const  deployer  = "0xa232C1953Cf80b839f64AE215b67290c95E6B2f1";
   console.log("deployer", deployer)
   const { deploy } = hre.deployments;
   const myERC20Deployment = await deploy("customToken", {
